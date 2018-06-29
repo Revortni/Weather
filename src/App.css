@@ -1,0 +1,57 @@
+.footbar{
+	width:100%;
+	bottom:0;
+	height: 7%;
+	padding: 10px;
+	font-weight: bold;
+	position: absolute;
+	text-align: center;
+	background-color: #3E536F;
+	margin-bottom: -20px;
+}
+
+.headbar{
+	width:100%;
+	top:0;
+	height: 20%;
+	padding:10px;
+	background-color: #3E536F;
+	display: flex;
+	justify-content: space-around;
+	font-weight: bold;
+}
+
+.headbar .title{
+	width:100%;
+	font-size:3em;
+	text-align: center;
+	cursor: pointer;
+}
+
+.dashboard{
+	position: fixed;
+	display: flex;
+	justify-content:center;
+	height:90%;
+	width: 100vw;
+	z-index: 0;
+	align-items: center;
+	background-color:#698DBC;
+	text-align: center;
+}
+
+body{
+	overflow: hidden;
+	font-family: 'Sofia';
+	margin:0 auto;
+}
+
+.icon{
+	z-index: 5;
+	margin-right: 10px;
+	float:right;
+}
+
+.icon:hover{
+	color: #ff0000;	
+}
