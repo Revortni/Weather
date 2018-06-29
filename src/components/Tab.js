@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery'
 
-const api_key="2cd0dc8b98a6146a534a1c32e1b72fdd";
+const api_key="";//insert api key for open weather api
 
 class Tab extends Component {
 	
