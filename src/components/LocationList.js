@@ -27,7 +27,7 @@ class LocationList extends Component{
 	}
 
 	async fetchLocation(){
-		var req = new Request('http://192.168.1.4:4000/list.json');
+		var req = new Request('https://cors-anywhere.herokuapp.com/https://gist.githubusercontent.com/Revortni/aebeed6a7ec59492c0c7066866c7f616/raw/bf214cc9cd86c214753407a2656b7b2f30ab7e33/citylist.json');
 		function compare(a,b) {
 			if (a.name < b.name)
 			  return -1;
@@ -36,7 +36,15 @@ class LocationList extends Component{
 			return 0;
 		  }
 		try{
-			let response=await fetch(req);
+			let response=await fetch(req,{
+				method:'GET',
+				mode: 'cors',
+				headers: {
+				  'Access-Control-Allow-Origin':'*',
+				  'Access-Control-Allow-Methods':'*',
+				  "Access-Control-Allow-Headers": "X-Requested-With"
+				}
+			});
 			const data= await response.json();
 			data.sort(compare);
 			this.setState({data:data});
@@ -47,8 +55,10 @@ class LocationList extends Component{
 
 	render(){
 		let locations = this.state.data.map(x=>{
+			if(x.name!=='-'){
 			return(<option value={x.name} key={x.id} loc={x.id}/>)
-			})
+			}
+		else return null;})
 		return(
 			<div className="location">
 				Locations
