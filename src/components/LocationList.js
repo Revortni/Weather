@@ -1,4 +1,16 @@
 import React, { Component } from 'react';
+import '../App.css';
+class Notloaded extends Component{
+	render(){
+		return(
+		<div className='location-loading'>
+			<div className='fa-1x loading'>
+        	<i className="fas fa-cog fa-spin"/>
+          </div>
+		</div>
+		);
+	}
+}
 
 class LocationList extends Component{
 
@@ -8,7 +20,8 @@ class LocationList extends Component{
 			open:true,
 			data:[],
 			location:null,
-			value:null
+			value:null,
+			loaded:false
 		}
 	}
 
@@ -17,6 +30,7 @@ class LocationList extends Component{
 	}
 
 	componentWillMount(){
+		this.setState({loaded:false});
 		this.fetchLocation();
 	}
 
@@ -47,37 +61,54 @@ class LocationList extends Component{
 			});
 			const data= await response.json();
 			data.sort(compare);
-			this.setState({data:data});
+			this.setState({
+				data:data,
+				loaded:true
+			});
 		} catch(e){
 			console.error(e);
 		}
 	}
 
 	render(){
+		const loaded =()=>{
+			return(
+				<div className='location'>
+				
+				</div>
+		);}
+
 		let locations = this.state.data.map(x=>{
 			if(x.name!=='-'){
 			return(<option value={x.name} key={x.id} loc={x.id}/>)
-			}
-		else return null;})
+			}	else {return null;}
+		});
+
 		return(
 			<div className="location">
 				Locations
 				<div className="icon" onClick={this.hideOption.bind(this)}>
 					<i className="fas fa-times-circle" ></i>
 	    		</div>
-	    		<div>
-				<input list="addCity" name ="addCity" ref="location" placeholder="Enter location"/>
-	    		<datalist id="addCity">
-		          {locations}
-		        </datalist>
-		        </div>
-		        <div>
-			        <button id="butAddCity" onClick={this.onSubmit.bind(this)}>Add</button>
-			        <button id="butAddCancel" onClick={this.hideOption.bind(this)}>Cancel</button>
-      			</div>
-				  
-	    	</div>
-
+				
+				{this.state.loaded?
+					(<div>
+					<div>
+						<input list="addCity" name ="addCity" ref="location" placeholder="Enter location"/>
+							<datalist id="addCity">
+									{locations}
+							</datalist>
+					</div>
+					<div>
+						<button id="butAddCity" onClick={this.onSubmit.bind(this)}>Add</button>
+						<button id="butAddCancel" onClick={this.hideOption.bind(this)}>Cancel</button>
+					</div>
+				</div>
+					)
+					:
+					<Notloaded/>}
+			
+	    </div>
 		);
 	}
 }
