@@ -71,13 +71,6 @@ class LocationList extends Component{
 	}
 
 	render(){
-		const loaded =()=>{
-			return(
-				<div className='location'>
-				
-				</div>
-		);}
-
 		let locations = this.state.data.map(x=>{
 			if(x.name!=='-'){
 			return(<option value={x.name} key={x.id} loc={x.id}/>)

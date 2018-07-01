@@ -51,9 +51,19 @@ class Dashboard extends Component {
     });
   }
 
+  closeTab(data){
+    let datalist =this.state.datalist;
+    datalist.pop(data);
+    let hasLocation=(datalist.length>0)?true:false;
+    this.setState({
+      datalist:datalist,
+      hasLocation:hasLocation
+    });
+  }
+
   render() {
     let data = this.state.datalist;
-    let datalist = (data.length>0)?data.map(info=><Tab data={info} key={info.id}/>):null;
+    let datalist = (data.length>0)?data.map(info=><Tab data={info} key={info.id} closeTab={this.closeTab.bind(this)}/>):null;
     // let background = this.props.blur?"blury":"notblury";
     return (
     	<div className="dashboard">
