@@ -1,6 +1,5 @@
 <h1>NOTE:</h1>
 <ul>
-  <li>Required to host the file 'list.json' in ./src/data folder to fetch location code.
   <li>Requires an API key which you can get from https://openweathermap.org/api
 
 <hr>
