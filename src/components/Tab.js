@@ -22,8 +22,8 @@ class Tab extends Component {
 	constructor(){
 		super();
 		this.state={
-			data:[],
-			info:null
+			data:[], //location whose data is to be fetched
+			info:null //to store fetched data
 		};
 	}
 
@@ -42,6 +42,7 @@ class Tab extends Component {
 					info:x
 				});
 				console.log(x);
+				console.log("fetched");
 			},
 			error: function(xhr, status, err) {
 					console.log(err + "couldnot load file");

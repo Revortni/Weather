@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import Tab from './Tab.js'
 import LocationList from './LocationList.js';
 import './css/dashboard.css';
+
+const proxy = 'https://cors-anywhere.herokuapp.com/';
+const uri = 'https://gist.githubusercontent.com/Revortni/aebeed6a7ec59492c0c7066866c7f616/raw/bf214cc9cd86c214753407a2656b7b2f30ab7e33/citylist.json';
+
 class Loading extends Component{
 	render(){
     var show=this.props.show?"block":"none";
@@ -25,8 +29,10 @@ class Dashboard extends Component {
     this.state={
       addNew:false,
       hasLocation:false,
-      datalist:[],
-      blur:false
+      datalist:[],//data to be displayed
+      blur:false,
+      listloaded:false,
+      locationlist:[]//data list of all the locations  
     };
   }
 
@@ -60,6 +66,43 @@ class Dashboard extends Component {
       hasLocation:hasLocation
     });
   }
+  
+  componentWillMount(){
+    if(!this.state.loadedlist)
+    {this.fetchLocation();}
+  }
+
+  async fetchLocation(){
+		var req = new Request(proxy+uri);
+		function compare(a,b) {
+			if (a.name < b.name)
+			  return -1;
+			if (a.name > b.name)
+			  return 1;
+			return 0;
+		  }
+		try{
+
+			let response=await fetch(req,{
+				method:'GET',
+				mode: 'cors',
+				headers: {
+				  'Access-Control-Allow-Origin':'*',
+				  'Access-Control-Allow-Methods':'*',
+          "Access-Control-Allow-Headers": "X-Requested-With",
+          'Origin':uri
+				}
+			});
+			const data= await response.json();
+			data.sort(compare);
+			this.setState({
+				locationlist:data,
+				listloaded:true
+			});
+		} catch(e){
+			console.error(e);
+		}
+	}
 
   render() {
     let data = this.state.datalist;
@@ -69,7 +112,7 @@ class Dashboard extends Component {
     	<div className="dashboard">
         {!this.state.hasLocation && <Loading show={true}/>}
         {this.state.hasLocation && datalist}
-        {this.state.addNew && <LocationList close={this.handleClose.bind(this)} getLocation={this.getLocation.bind(this)}/>}
+        {this.state.addNew && <LocationList close={this.handleClose.bind(this)} getLocation={this.getLocation.bind(this)} data={this.state.locationlist} loaded={this.state.listloaded}/>}
     	</div>
       );
 	}

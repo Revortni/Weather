@@ -17,11 +17,8 @@ class LocationList extends Component{
 	constructor(){
 		super();
 		this.state={
-			open:true,
 			data:[],
 			location:null,
-			value:null,
-			loaded:false
 		}
 	}
 
@@ -29,9 +26,11 @@ class LocationList extends Component{
 		this.props.close();
 	}
 
-	componentWillMount(){
-		this.setState({loaded:false});
-		this.fetchLocation();
+	componentDidMount(){
+		this.setState({
+			data:this.props.data,
+			loaded:this.props.loaded
+		});
 	}
 
 	async onSubmit(){
@@ -39,37 +38,7 @@ class LocationList extends Component{
 		await this.props.getLocation(data);
 		this.props.close();
 	}
-
-	async fetchLocation(){
-		var req = new Request('https://cors-anywhere.herokuapp.com/https://gist.githubusercontent.com/Revortni/aebeed6a7ec59492c0c7066866c7f616/raw/bf214cc9cd86c214753407a2656b7b2f30ab7e33/citylist.json');
-		function compare(a,b) {
-			if (a.name < b.name)
-			  return -1;
-			if (a.name > b.name)
-			  return 1;
-			return 0;
-		  }
-		try{
-			let response=await fetch(req,{
-				method:'GET',
-				mode: 'cors',
-				headers: {
-				  'Access-Control-Allow-Origin':'*',
-				  'Access-Control-Allow-Methods':'*',
-				  "Access-Control-Allow-Headers": "X-Requested-With"
-				}
-			});
-			const data= await response.json();
-			data.sort(compare);
-			this.setState({
-				data:data,
-				loaded:true
-			});
-		} catch(e){
-			console.error(e);
-		}
-	}
-
+	
 	render(){
 		let locations = this.state.data.map(x=>{
 			if(x.name!=='-'){
